@@ -61,6 +61,11 @@ def Station(id):
 					status = 'Low'
 			data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + item[2] + 'm)')
 	return render_template('station.html', station=station.get('value'), data=data)
+	
+@app.route("/colophon")
+
+def Colophon():
+	return render_template('colophon.html')
 		
 if __name__ == '__main__':
     app.run()
