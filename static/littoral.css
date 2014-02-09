@@ -1,41 +1,41 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline; }
-
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-  display: block; }
-
+@import url("reset.css");
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
+@media screen and (min-width: 1024px) {
+  @import url("960.css"); }
 body {
-  line-height: 1; }
+  font-family: 'Open Sans', sans-serif; }
 
-ol, ul {
-  list-style: none; }
+h1, h2 {
+  font-weight: 300; }
 
-blockquote, q {
-  quotes: none; }
+h1 {
+  font-size: 36px; }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none; }
+h2 {
+  font-size: 24px; }
 
-table {
-  border-collapse: collapse;
-  border-spacing: 0; }
+p, li {
+  font-size: 14px; }
+
+a {
+  text-decoration: none;
+  border-bottom: solid 1px black;
+  color: black; }
+  a:hover {
+    border-bottom: solid 1px #0066aa;
+    color: #0066aa; }
+
+header {
+  margin: 1em 0;
+  text-align: center; }
+
+#content {
+  margin: 1em auto;
+  text-align: center; }
+  #content li {
+    line-height: 1.5; }
+
+footer {
+  text-align: center; }
+  footer p {
+    font-size: 12px; }

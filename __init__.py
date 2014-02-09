@@ -1,16 +1,14 @@
 import bs4, datetime, flask, json, requests, urllib, time
 from bs4 import BeautifulSoup
 from datetime import date
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 
-def Littoral():
-
-	return '<!DOCTYPE html><html><head><title>Littoral</title></head><body><h1>Littoral</h1><p>Nothing to see here.</p></body></html>'
-
+def Index():
+	return render_template('index.html')
 
 @app.route("/station/<id>")
 
@@ -20,7 +18,7 @@ def Station(id):
 	m = str(date.today().month)
 	d = str(date.today().day)
 	tz = time.tzname[0]
-		
+
 	sock = urllib.urlopen('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz='+tz+'&pres=2')
 	source = sock.read()
 	sock.close()
@@ -46,9 +44,7 @@ def Station(id):
 	
 	station = station.get('results')[0]
 	
-	output = '<!DOCTYPE html><html><head><title>Littoral &middot; ' + station.get('value') + '</title></head><body>'
-	
-	output += '<h1>Littoral</h1><h2>' + station.get('value') + '</h2>'
+	data = []
 	
 	for index, item in enumerate(predictions):
 		# make sure that we only show data points in the future
@@ -65,11 +61,8 @@ def Station(id):
 					status = 'High'
 				else:
 					status = 'Low'
-			output += '<p>' + status + ' at ' + item[1] + ' on ' + item[0] + ' (' + item[2] + 'm)</p>'
-	
-	output += '</body></html>'
-	
-	return output
+			data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + item[2] + 'm)')
+	return render_template('station.html', station=station.get('value'), data=data)
 		
 if __name__ == '__main__':
     app.run()
