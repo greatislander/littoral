@@ -46,7 +46,7 @@ def Station(id):
 	
 	station = station.get('results')[0]
 	
-	output = '<!DOCTYPE html><html><head><title>Littoral</title></head><body>'
+	output = '<!DOCTYPE html><html><head><title>Littoral &middot; ' + station.get('value') + '</title></head><body>'
 	
 	output += '<h1>Littoral</h1><h2>' + station.get('value') + '</h2>'
 	
