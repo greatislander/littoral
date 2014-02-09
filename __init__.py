@@ -1,4 +1,4 @@
-import bs4, datetime, flask, json, requests, urllib, time
+import bs4, datetime, flask, json, requests, time
 from bs4 import BeautifulSoup
 from datetime import date
 from flask import Flask, render_template
@@ -19,11 +19,9 @@ def Station(id):
 	d = str(date.today().day)
 	tz = time.tzname[0]
 
-	sock = urllib.urlopen('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz='+tz+'&pres=2')
-	source = sock.read()
-	sock.close()
+	r = requests.get('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz='+tz+'&pres=2')
 	
-	soup = BeautifulSoup(source)
+	soup = BeautifulSoup(r.text)
 	header = soup.find('div',{'class':'stationTextHeader'}) # isolate the station header
 	predictions = soup.find('div',{'class':'stationTextData'}) # isolate the station data table 
 	predictions = predictions.text.split('\n') # create list based on newline characters
