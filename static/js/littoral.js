@@ -12,4 +12,12 @@ $( window ).load(function() {
 		$('.location').text(latitude + ',' + longitude);
     }, handle_error);
   }
+  $('#station').chosen();
+  $('#station').change(function () {
+	var optionSelected = $('option:selected', this);
+    var valueSelected = optionSelected.val();
+    if ( valueSelected !== '' ) {
+      document.location.href = '/station/' + valueSelected;
+    }
+  });
 });
