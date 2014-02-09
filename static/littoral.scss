@@ -45,6 +45,11 @@ header {
 #content {
 	margin: 1em auto;
 	text-align: center;
+	p {
+		&.location {
+			display: none;
+		}
+	}
 	li {
 		line-height: 1.5;
 	}
