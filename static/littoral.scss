@@ -14,18 +14,6 @@ h1, h2 {
 	font-weight: 300;
 }
 
-h1 {
-	font-size: 36px;
-}
-
-h2 {
-	font-size: 24px;
-}
-
-p, li {
-	font-size: 14px;
-}
-
 a {
 	text-decoration: none;
 	border-bottom: solid 1px black;
@@ -33,6 +21,16 @@ a {
 	&:hover {
 		border-bottom: solid 1px $blue;
 		color: $blue;
+	}
+}
+
+h1 {
+	@include huge;
+	a {
+		border-bottom: solid 2px black;
+		&:hover {
+			border-bottom: solid 2px $blue;
+		}
 	}
 }
 
@@ -57,5 +55,6 @@ header {
 }
 footer {
 	text-align: center;
-	p { font-size: 12px; }
+	p { @include small; }
+	padding-bottom: 1em !important;
 }

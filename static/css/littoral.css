@@ -269,15 +269,6 @@ body {
 h1, h2 {
   font-weight: 300; }
 
-h1 {
-  font-size: 36px; }
-
-h2 {
-  font-size: 24px; }
-
-p, li {
-  font-size: 14px; }
-
 a {
   text-decoration: none;
   border-bottom: solid 1px black;
@@ -285,6 +276,15 @@ a {
   a:hover {
     border-bottom: solid 1px #0066aa;
     color: #0066aa; }
+
+h1 {
+  /* 42px / 48px */
+  font-size: 2.625em;
+  line-height: 1.14286em; }
+  h1 a {
+    border-bottom: solid 2px black; }
+    h1 a:hover {
+      border-bottom: solid 2px #0066aa; }
 
 header {
   margin: 1em 0;
@@ -301,6 +301,9 @@ header {
     text-align: left; }
 
 footer {
-  text-align: center; }
+  text-align: center;
+  padding-bottom: 1em !important; }
   footer p {
-    font-size: 12px; }
+    /* 13px / 18px */
+    font-size: 0.8125em;
+    line-height: 1.38462em; }
