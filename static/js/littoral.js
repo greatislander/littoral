@@ -13,8 +13,7 @@ $( window ).load(function() {
     }, handle_error);
   }
   $('#station').select2({
-    placeholder: "Select a station",
-    allowClear: true
+    placeholder: "Select a station"
   });
   $('#station').change(function () {
 	var optionSelected = $('option:selected', this);
