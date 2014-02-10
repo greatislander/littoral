@@ -12,7 +12,7 @@ $( window ).load(function() {
 		$('.location').text(latitude + ',' + longitude);
     }, handle_error);
   }
-  $('#station').chosen();
+  $('#station').chosen({allow_single_deselect: true});
   $('#station').change(function () {
 	var optionSelected = $('option:selected', this);
     var valueSelected = optionSelected.val();
