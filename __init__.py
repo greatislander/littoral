@@ -10,14 +10,13 @@ app = Flask(__name__)
 def Index():
 	return render_template('index.html')
 
-@app.route("/station/<id>")
+@app.route("/station/<id>/<tz>/")
 
-def Station(id):
+def Station(id, tz):
 
 	y = str(date.today().year)
 	m = str(date.today().month)
 	d = str(date.today().day)
-	tz = time.tzname[0]
 
 	r = requests.get('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz='+tz+'&pres=2')
 	
