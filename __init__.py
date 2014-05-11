@@ -48,7 +48,7 @@ def Station(id):
 					else:
 						status = 'Low'
 				height = item[2].replace('(m)', 'm')
-				data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + height + ')')
+				data.append(status + ' at ' + item[1] + ' ' + tz + ' on ' + item[0] + ' (' + height + ')')
 	else:
 		data = ['No data found.']
 
@@ -60,12 +60,13 @@ def Station(id):
 		index = header.find('(')
 		header = header[0:index-1]
 	
-		r = requests.get('http://geoportal-geoportail.gc.ca/ArcGIS/rest/services/tides-marees/allstations-toutestations/MapServer/find?searchText='+header+'&contains=true&searchFields=&sr=&layers=0&layerdefs=&returnGeometry=true&maxAllowableOffset=&f=json')
+		r = requests.get('http://geoportal-geoportail.gc.ca/arcgis/rest/services/tides_marees/allstations_toutestations/MapServer/0/query?text='+header+'&f=json')
 		
 		station = r.json()
 		
-		station = station.get('results')[0]
-		station_name = station.get('value')
+		station = station.get('features')[0]
+		station = station.get('attributes')
+		station_name = station.get('STATION_NAME')
 	else:
 		station_name = 'Station Unavailable'
 	
