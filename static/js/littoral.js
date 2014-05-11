@@ -15,12 +15,11 @@ $( window ).load(function() {
   $('#station').select2({
     placeholder: "Select a station"
   });
-  var timeZone = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
   $('#station').change(function () {
 	var optionSelected = $('option:selected', this);
     var valueSelected = optionSelected.val();
     if ( valueSelected !== '' ) {
-      document.location.href = '/station/' + valueSelected + '/' + timeZone;
+      document.location.href = '/station/' + valueSelected;
     }
   });
 });

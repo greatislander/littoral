@@ -10,15 +10,15 @@ app = Flask(__name__)
 def Index():
 	return render_template('index.html')
 
-@app.route("/station/<id>/<tz>/")
+@app.route("/station/<id>/")
 
-def Station(id, tz):
+def Station(id):
 
 	y = str(date.today().year)
 	m = str(date.today().month)
 	d = str(date.today().day)
 
-	r = requests.get('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz='+tz+'&pres=2')
+	r = requests.get('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&pres=2')
 	
 	soup = BeautifulSoup(r.text)
 	predictions = soup.find('div',{'class':'stationTextData'}) # isolate the station data table
@@ -47,7 +47,7 @@ def Station(id, tz):
 					else:
 						status = 'Low'
 				height = item[2].replace('(m)', 'm')
-				data.append(status + ' at ' + item[1] + ' ' + tz + ' on ' + item[0] + ' (' + height + ')')
+				data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + height + ')')
 	else:
 		data = ['No data found.']
 
