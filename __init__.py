@@ -1,4 +1,4 @@
-import bs4, datetime, flask, json, requests, time, math, yaml
+import bs4, datetime, flask, json, requests, time, math, yaml, os
 from bs4 import BeautifulSoup
 from datetime import date
 from flask import Flask, render_template, request, redirect
@@ -42,7 +42,9 @@ def Index():
 	if request.method == 'POST':
 		lat1 = float(request.form['latitude'])
 		long1 = float(request.form['longitude'])
-		f = open('static/stations.yaml')
+		root = os.path.dirname(os.path.abspath(__file__))
+		src = os.path.join(root, 'static/stations.yaml')
+		f = open(src)
 		stations = yaml.load(f.read())
 	
 		comps = {}
