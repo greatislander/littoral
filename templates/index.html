@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+{% if locate == 'true' %}
+<form id="location" action="/" method="post">
+<input type="hidden" id="latitude" name="latitude">
+<input type="hidden" id="longitude" name="longitude">
+</form>
+{% endif %}
 <select id="station">
 	<option value=""></option>
 	<optgroup label="British Columbia">
@@ -867,5 +873,4 @@
 		<option value="6515">Kay Point</option>
 	</optgroup>
 </select>
-<p class="location"></p>
 {% endblock %}

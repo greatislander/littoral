@@ -1,14 +1,61 @@
-import bs4, datetime, flask, json, requests, time
+import bs4, datetime, flask, json, requests, time, math, yaml
 from bs4 import BeautifulSoup
 from datetime import date
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
-@app.route("/")
+def distance_on_unit_sphere(lat1, long1, lat2, long2):
+
+	# Convert latitude and longitude to
+	# spherical coordinates in radians.
+	degrees_to_radians = math.pi/180.0
+	
+	# phi = 90 - latitude
+	phi1 = (90.0 - lat1)*degrees_to_radians
+	phi2 = (90.0 - lat2)*degrees_to_radians
+	
+	# theta = longitude
+	theta1 = long1*degrees_to_radians
+	theta2 = long2*degrees_to_radians
+	
+	# Compute spherical distance from spherical coordinates.
+	
+	# For two locations in spherical coordinates
+	# (1, theta, phi) and (1, theta, phi)
+	# cosine( arc length ) =
+	#	sin phi sin phi' cos(theta-theta') + cos phi cos phi'
+	# distance = rho * arc length
+	
+	cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + math.cos(phi1)*math.cos(phi2))
+	arc = math.acos( cos )
+	
+	# Remember to multiply arc by the radius of the earth
+	# in your favorite set of units to get length.
+	return arc
+
+
+@app.route("/", methods=['GET', 'POST'])
 
 def Index():
-	return render_template('index.html')
+
+	if request.method == 'POST':
+		lat1 = float(request.form['latitude'])
+		long1 = float(request.form['longitude'])
+		f = open('static/stations.yaml')
+		stations = yaml.load(f.read())
+	
+		comps = {}
+	
+		for k, v in stations.iteritems():
+			lat2 = v['latitude']
+			long2 = v['longitude']
+			comps[k] = distance_on_unit_sphere(lat1, long1, lat2, long2)
+	
+		id = str(min(comps, key = comps.get))
+		return redirect("/station/"+id)
+	else:
+		return render_template('index.html', locate='true', pageclass='index')
 
 @app.route("/station/<id>")
 
@@ -69,12 +116,12 @@ def Station(id):
 	else:
 		station_name = 'Station Unavailable'
 	
-	return render_template('station.html', station=station_name, data=data)
+	return render_template('station.html', station=station_name, data=data, pageclass='station')
 	
 @app.route("/colophon")
 
 def Colophon():
-	return render_template('colophon.html')
+	return render_template('colophon.html', pageclass='colophon')
 		
 if __name__ == '__main__':
     app.run()
