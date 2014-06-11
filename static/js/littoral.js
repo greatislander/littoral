@@ -1,5 +1,6 @@
 function handle_error(err) {
   if (err.code === 1) {
+  	$('.select2-container').fadeToggle();
   }
 }
 $( window ).load(function() {
