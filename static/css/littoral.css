@@ -295,6 +295,8 @@ header {
   text-align: center; }
   #content li {
     line-height: 1.5; }
+  #content select {
+    display: none; }
   #content .select2-container {
     width: 300px;
     text-align: left;

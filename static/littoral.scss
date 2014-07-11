@@ -46,6 +46,9 @@ header {
 	li {
 		line-height: 1.5;
 	}
+	select {
+		display: none;
+	}
 	.select2-container {
 		width: 300px;
 		text-align: left;
