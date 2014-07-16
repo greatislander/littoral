@@ -82,7 +82,7 @@ def Station(id):
 		
 		for index, item in enumerate(predictions):
 			# make sure that we only show data points in the future
-			if datetime.datetime.strptime(item[0]+' '+item[1], '%Y/%m/%d %H:%M:%S') > datetime.datetime.now():
+			# if datetime.datetime.strptime(item[0]+' '+item[1], '%Y/%m/%d %H:%M:%S') > datetime.datetime.now():
 				try: # compare to the subsequent item to determine whether reading is for high or low tide
 					next = predictions[index + 1]
 					if item[2] > next[2]:
