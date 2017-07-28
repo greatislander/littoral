@@ -1,0 +1,7 @@
+{
+  "name": "littoral",
+  "version": "0.1.0",
+  "repository": "git@github.com:bight/littoral.git",
+  "author": "Ned Zimmerman <ned@bight.ca>",
+  "license": "MIT"
+}

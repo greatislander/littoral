@@ -21,3 +21,4 @@ CVS
 venv
 .sass-cache
 config.codekit
+node_modules
