@@ -1,9 +1,15 @@
 import bs4, datetime, flask, json, requests, time, math, yaml, os
 from bs4 import BeautifulSoup
+from collections import defaultdict
 from datetime import date
-from flask import Flask, render_template, request, redirect
+from flask import Flask, jsonify, render_template, request, redirect
+
+port = int(os.environ.get('PORT', 5000))
 
 app = Flask(__name__)
+
+def tree():
+    return defaultdict(tree)
 
 def distance_on_unit_sphere(lat1, long1, lat2, long2):
 
@@ -34,7 +40,6 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
 	# in your favorite set of units to get length.
 	return arc
 
-
 @app.route("/", methods=['GET', 'POST'])
 
 def Index():
@@ -58,6 +63,83 @@ def Index():
 		return redirect("/station/"+id)
 	else:
 		return render_template('index.html', locate='true', pageclass='index')
+
+@app.route('/ca/', methods=['GET'])
+
+def Canada():
+	return 'O Canada'
+	
+@app.route('/ca/prediction/<id>', methods=['GET'])
+
+def Prediction(id):
+		
+	y = str(datetime.date.today().year)
+	m = str(datetime.date.today().month)
+	d = str(datetime.date.today().day)
+
+	r = requests.get('http://tides.gc.ca/eng/station?type=0&date='+y+'%2F'+m+'%2F'+d+'&sid='+id+'&tz=UTC&pres=2')
+	
+	soup = BeautifulSoup(r.text)
+	header = soup.find('div',{'class':'stationTextHeader'}) # isolate the station header
+	div = header.find_all('div')
+
+	station = div[0].text
+	station = station.replace('# Station : ', '')
+	station = station.replace(' ('+id+') ', '')
+
+	r = requests.get('http://geoportal-geoportail.gc.ca/arcgis/rest/services/tides_marees/allstations_toutestations/MapServer/0/query?text='+station+'&f=json')
+	
+	station = r.json()
+	
+	station = station.get('features')[0]
+	station_attributes = station.get('attributes')
+	station_geometry = station.get('geometry')
+	name = station_attributes.get('STATION_NAME')
+	latitude = station_geometry.get('y')
+	longitude = station_geometry.get('x')
+	
+	predictions = soup.find('div',{'class':'stationTextData'}) # isolate the station data table
+
+	prediction = tree()
+
+	prediction['station']['name'] = name
+	prediction['station']['country'] = 'Canada'
+	prediction['station']['latitude'] = latitude
+	prediction['station']['longitude'] = longitude
+
+	if predictions != None:
+		predictions = predictions.text.split('\n') # create list based on newline characters
+		predictions = filter(lambda l: l.strip(), predictions) # strip empty lines
+		predictions = [item.lstrip() for item in predictions] # strip whitespace from beginning of lines
+		predictions = [item.rstrip() for item in predictions] # strip whitespace from end of lines
+		predictions = [item.split(';') for item in predictions] # split each line into components
+		
+		for index, item in enumerate(predictions):
+			# make sure that we only show data points in the future
+			# if datetime.datetime.strptime(item[0]+' '+item[1], '%Y/%m/%d %H:%M:%S') > datetime.datetime.now():
+				height = item[2].replace('(m)', '')
+				try: # compare to the subsequent item to determine whether reading is for high or low tide
+					nextheight = predictions[index + 1][2].replace('(m)', '')
+					if float(height) > float(nextheight):
+						status = 'high'
+					else:
+						status = 'low'
+				except IndexError: # if there is no subsequent item, compare to the previous item
+					previousheight = predictions[index - 1][2].replace('(m)', '')
+					if float(height) > float(previousheight):
+						status = 'high'
+					else:
+						status = 'low'
+
+				date = item[0].replace('/', '-')
+				time = item[1]
+				prediction['data'][index]['datetime'] = date + ' ' + time + '+00:00'
+				prediction['data'][index]['status'] = status
+				prediction['data'][index]['height'] = height
+	else:
+		prediction['data'] = 'No data found.'
+		
+	return jsonify({'prediction': prediction})
 
 @app.route("/station/<id>")
 
@@ -83,19 +165,19 @@ def Station(id):
 		for index, item in enumerate(predictions):
 			# make sure that we only show data points in the future
 			# if datetime.datetime.strptime(item[0]+' '+item[1], '%Y/%m/%d %H:%M:%S') > datetime.datetime.now():
+				height = item[2].replace('(m)', '')
 				try: # compare to the subsequent item to determine whether reading is for high or low tide
-					next = predictions[index + 1]
-					if item[2] > next[2]:
-						status = 'High'
+					nextheight = predictions[index + 1][2].replace('(m)', '')
+					if float(height) > float(nextheight):
+						status = 'high'
 					else:
-						status = 'Low'
+						status = 'low'
 				except IndexError: # if there is no subsequent item, compare to the previous item
-					previous = predictions[index - 1]
-					if item[2] > previous[2]:
-						status = 'High'
+					previousheight = predictions[index - 1][2].replace('(m)', '')
+					if float(height) > float(previousheight):
+						status = 'high'
 					else:
-						status = 'Low'
-				height = item[2].replace('(m)', 'm')
+						status = 'low'
 				data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + height + ')')
 	else:
 		data = ['No data found.']
@@ -113,8 +195,9 @@ def Station(id):
 		station = r.json()
 		
 		station = station.get('features')[0]
-		station = station.get('attributes')
-		station_name = station.get('STATION_NAME')
+		station_attributes = station.get('attributes')
+		station_geometry = station.get('geometry')
+		station_name = station_attributes.get('STATION_NAME')
 	else:
 		station_name = 'Station Unavailable'
 	
@@ -126,4 +209,4 @@ def Colophon():
 	return render_template('colophon.html', pageclass='colophon')
 		
 if __name__ == '__main__':
-    app.run()
+   app.run(host='0.0.0.0', port=port)
