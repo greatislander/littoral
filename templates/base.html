@@ -3,11 +3,11 @@
 	<head>
 		<title>Littoral{% block title %}{% endblock %}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/static/css/littoral.css" />
-		<link rel="stylesheet" href="/static/css/select2.css" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/littoral.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/select2.css') }}" />
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js" charset="utf-8"></script>
-		<script type="text/javascript" src="/static/js/select2.min.js" charset="utf-8"></script>
-		<script type="text/javascript" src="/static/js/littoral.js" charset="utf-8"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/select2.min.js') }}" charset="utf-8"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/littoral.js') }}" charset="utf-8"></script>
 	</head>
 	<body class="{{pageclass}}">
 		<header class="wrapper">
