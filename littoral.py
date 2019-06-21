@@ -47,20 +47,17 @@ def Index():
 	if request.method == 'POST':
 		lat1 = float(request.form['latitude'])
 		long1 = float(request.form['longitude'])
-		root = os.path.dirname(os.path.abspath(__file__))
-		src = os.path.join(root, 'static/stations.yaml')
-		f = open(src)
-		stations = yaml.load(f.read())
+		with open(os.path.join(os.path.abspath(__file__), 'static/stations.yaml'), 'r') as stream:
+			stations = yaml.safe_load(stream)
+			comps = {}
 
-		comps = {}
+			for k, v in stations.iteritems():
+				lat2 = v['latitude']
+				long2 = v['longitude']
+				comps[k] = distance_on_unit_sphere(lat1, long1, lat2, long2)
 
-		for k, v in stations.iteritems():
-			lat2 = v['latitude']
-			long2 = v['longitude']
-			comps[k] = distance_on_unit_sphere(lat1, long1, lat2, long2)
-
-		id = str(min(comps, key = comps.get))
-		return redirect("/station/"+id)
+			id = str(min(comps, key = comps.get))
+			return redirect("/station/"+id)
 	else:
 		return render_template('index.html', locate='true', pageclass='index')
 
