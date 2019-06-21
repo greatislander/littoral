@@ -3,7 +3,7 @@ function handle_error(err) {
   	$('.select2-container').fadeToggle();
   }
 }
-$( window ).load(function() {
+$( window ).on("load", function() {
 	if ( $('body').hasClass('index') ) {
 	  if (navigator.geolocation) {
 	    navigator.geolocation.getCurrentPosition(function(position) {
