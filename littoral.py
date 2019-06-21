@@ -47,7 +47,7 @@ def Index():
 	if request.method == 'POST':
 		lat1 = float(request.form['latitude'])
 		long1 = float(request.form['longitude'])
-		with open(os.path.join(os.path.abspath(__file__), 'static/stations.yaml'), 'r') as stream:
+		with open('static/stations.yaml', 'r') as stream:
 			stations = yaml.safe_load(stream)
 			comps = {}
 
