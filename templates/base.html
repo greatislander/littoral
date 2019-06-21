@@ -5,9 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/littoral.css') }}" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/select2.css') }}" />
-		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js" charset="utf-8"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/select2.min.js') }}" charset="utf-8"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/littoral.js') }}" charset="utf-8"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='js/select2.min.js') }}" charset="utf-8"></script>
+		<script src="{{ url_for('static', filename='js/littoral.js') }}" charset="utf-8"></script>
 	</head>
 	<body class="{{pageclass}}">
 		<header class="wrapper">
@@ -18,7 +18,7 @@
 			{% block content %}{% endblock %}
 		</div>
 		<footer class="wrapper">
-			<p class="copyright"><a href="http://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a> 2014&ndash;2017 <a href="http://bight.ca/">Ned Zimmerman</a></p>
+			<p class="copyright"><a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a> 2014&ndash;2019 <a href="https://bight.ca/">Ned Zimmerman</a></p>
 		</footer>
 	</body>
 </html>

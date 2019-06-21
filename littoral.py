@@ -169,15 +169,15 @@ def Station(id):
 				try: # compare to the subsequent item to determine whether reading is for high or low tide
 					nextheight = predictions[index + 1][2].replace('(m)', '')
 					if float(height) > float(nextheight):
-						status = 'high'
+						status = 'High'
 					else:
-						status = 'low'
+						status = 'Low'
 				except IndexError: # if there is no subsequent item, compare to the previous item
 					previousheight = predictions[index - 1][2].replace('(m)', '')
 					if float(height) > float(previousheight):
-						status = 'high'
+						status = 'High'
 					else:
-						status = 'low'
+						status = 'Low'
 				data.append(status + ' at ' + item[1] + ' on ' + item[0] + ' (' + height + ')')
 	else:
 		data = ['No data found.']
@@ -196,7 +196,6 @@ def Station(id):
 
 		station = station.get('features')[0]
 		station_attributes = station.get('attributes')
-		station_geometry = station.get('geometry')
 		station_name = station_attributes.get('STATION_NAME')
 	else:
 		station_name = 'Station Unavailable'

@@ -39,14 +39,24 @@ header {
 #content {
 	margin: 1em auto;
 	text-align: center;
+
 	p {
+		// TODO
 	}
+
+	ul {
+		list-style: none;
+		padding-left: 0;
+	}
+
 	li {
 		line-height: 1.5;
 	}
+
 	select {
 		display: none;
 	}
+
 	.select2-container {
 		width: 300px;
 		text-align: left;
