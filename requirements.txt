@@ -1,6 +1,6 @@
 BeautifulSoup==3.2.1
 Flask>=0.12.3
-Jinja2==2.7.2
+Jinja2>=2.10.1
 pyyaml>=4.2b1
 Werkzeug==0.9.4
 beautifulsoup4==4.2.0
