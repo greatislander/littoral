@@ -196,6 +196,7 @@ def Station(id):
 
 		station = station.get('features')[0]
 		station_attributes = station.get('attributes')
+		station_geometry = station.get('geometry')
 		station_name = station_attributes.get('STATION_NAME')
 	else:
 		station_name = 'Station Unavailable'
